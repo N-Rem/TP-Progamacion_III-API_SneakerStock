@@ -1,12 +1,10 @@
-using Application.Interfaces;
-using Application.Services;
+
 using Domain.Interface;
 using Infrastructure.Data;//Para que aceda al contexto. 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using static Infrastructure.Data.AuthenticationService;
 
 
 using Infrastructure.Data;
