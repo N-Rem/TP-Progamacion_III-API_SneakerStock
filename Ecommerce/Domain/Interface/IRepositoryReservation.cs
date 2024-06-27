@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities;
 
 namespace Domain.Interface
 {
-    internal interface IRepositoryReservation
+    public interface IRepositoryReservation : IRepositoryBase<Reservation>
     {
+        void AddToReservation(Sneaker sneaker, int reservationId, int quantity);
+        void FinalizedReservation(Reservation reservation);
+        ICollection<Reservation>? GetAllReservation();
+        Reservation? GetReservationById(int id);
+        Reservation AddReservation(Reservation reservation);
     }
 }
