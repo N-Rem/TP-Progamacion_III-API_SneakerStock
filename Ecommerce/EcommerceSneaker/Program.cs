@@ -19,10 +19,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-//BD
 
+//Inyeciones
+//BD
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 builder.Configuration["ConnectionStrings:EcommerceDBConnectionString"], b => b.MigrationsAssembly("Infrastructure")));
+//Respository
+
+
+
+
+//Services
 
 
 
