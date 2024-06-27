@@ -35,7 +35,6 @@ namespace Domain.Entities
 
         public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
-        //Borrar la lista de reservaciones y poner una funcion para conseguir esta lista en una request?? 
 
         public enum UserType
         {

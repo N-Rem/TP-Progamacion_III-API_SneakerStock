@@ -50,13 +50,6 @@ namespace Application.Models
             dto.Id = user.Id;
             dto.Type = user.Type;
             user.Reservations = null;
-            //if (user.Reservations != null)
-            //{
-            //    foreach (var reservation in user.Reservations)
-            //    {
-            //        dto.Reservations.Add(ReservationDto.Create(reservation));
-            //    }
-            //}
 
             return dto;
         }
@@ -72,6 +65,5 @@ namespace Application.Models
         }
 
 
-        //Hacer un metodo que cree listas de dtos (https://github.com/UTN-FRRO-TUP-Programacion3/ConsultaAlumnos/blob/main/src/Application/Models/QuestionDto.cs) linea 46
     }
 }
