@@ -8,6 +8,8 @@ using System.Text;
 
 
 using Infrastructure.Data;
+using Application.Interfaces;
+using Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,11 +27,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 builder.Configuration["ConnectionStrings:EcommerceDBConnectionString"], b => b.MigrationsAssembly("Infrastructure")));
 //Respository
-
+builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
 
 
 
 //Services
+builder.Services.AddScoped<IUserServices, UserServices>();
 
 
 
