@@ -1,4 +1,3 @@
-
 using Domain.Interface;
 using Infrastructure.Data;//Para que aceda al contexto. 
 using Microsoft.EntityFrameworkCore;
@@ -9,8 +8,33 @@ using Infrastructure.Data;
 using Application.Interfaces;
 using Application.Services;
 using Microsoft.AspNetCore.Authentication;
+using static Infrastructure.Data.AuthenticationService;
+using IAuthenticationService = Application.Interfaces.IAuthenticationService;
+using AuthenticationService = Infrastructure.Data.AuthenticationService;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSwaggerGen(setupAction =>
+{
+    setupAction.AddSecurityDefinition("EcommerceApiBearerAuth", new OpenApiSecurityScheme() //Esto va a permitir usar swagger con el token.
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        Description = "Acá pegar el token generado al loguearse."
+    });
+
+    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "EcommerceApiBearerAuth" } //Tiene que coincidir con el id seteado arriba en la definición
+                }, new List<string>() }
+    });
+});
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -23,11 +47,29 @@ builder.Services.AddSwaggerGen();
 //BD
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 builder.Configuration["ConnectionStrings:EcommerceDBConnectionString"], b => b.MigrationsAssembly("Infrastructure")));
+builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticación que tenemos que elegir después en PostMan para pasarle el token
+    .AddJwtBearer(options => //Acá definimos la configuración de la autenticación. le decimos qué cosas queremos comprobar. La fecha de expiración se valida por defecto.
+    {
+        options.TokenValidationParameters = new()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["AuthenticationService:Issuer"],
+            ValidAudience = builder.Configuration["AuthenticationService:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["AuthenticationService:SecretForKey"]))
+        };
+    }
+);
 
 //Respository
 builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
+builder.Services.AddScoped<IRepositorySneaker, RepositorySneaker>();
 
 //Services
+builder.Services.Configure<AuthenticationServiceOptions>(
+    builder.Configuration.GetSection(AuthenticationServiceOptions.AuthenticationService));
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<ISneakerServices, SneakerServices>();
 
@@ -41,6 +83,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
