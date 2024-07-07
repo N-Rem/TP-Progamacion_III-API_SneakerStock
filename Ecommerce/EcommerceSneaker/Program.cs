@@ -64,8 +64,7 @@ builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntentica
 
 //Respository
 builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
-
-
+builder.Services.AddScoped<IRepositoryReservation, RepositoryReservation>();
 builder.Services.AddScoped<IRepositorySneaker, RepositorySneaker>();
 
 //Services
@@ -75,6 +74,7 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<ISneakerServices, SneakerServices>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+
 
 var app = builder.Build();
 
