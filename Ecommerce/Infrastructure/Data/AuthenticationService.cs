@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces;
-using Application.Models;
+using Application.Models.Requests;
 using Domain.Entities;
 using Domain.Interface;
 using Microsoft.Extensions.Options;
