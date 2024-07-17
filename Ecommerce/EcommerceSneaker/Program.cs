@@ -20,7 +20,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     {
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
-        Description = "Ac� pegar el token generado al loguearse."
+        Description = "Acá pegar el token generado al loguearse."
     });
 
     setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -73,7 +73,7 @@ builder.Services.Configure<AuthenticationServiceOptions>(
     builder.Configuration.GetSection(AuthenticationServiceOptions.AuthenticationService));
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserServices, UserServices>();
-builder.Services.AddScoped<ISneakerServices, SneakerServices>();
+builder.Services.AddScoped<ISneakerService, SneakerService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 
 

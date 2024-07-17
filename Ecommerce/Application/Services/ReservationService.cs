@@ -34,7 +34,8 @@ namespace Application.Services
                 User = user,
                 State = Reservation.ReservationState.Active,
             };
-            _repositoryReservation.AddReservation(newReservation);
+            _repositoryReservation.Add(newReservation);
+
         }
 
         public void Delete(int id)
@@ -50,22 +51,24 @@ namespace Application.Services
 
         public List<ReservationDto> GetAll()
         {
-            var list = _repositoryReservation.GetAllReservation()
-            ?? throw new Exception("No encontrado");
-            foreach (var reservation in list)
-            {
-                reservation.User = _repositoryUser.GetById(reservation.IdUser);
-            }
+            var list = _repositoryReservation.GetAllReservation();
+
+            return ReservationDto.CreateList(list);
+        }
+        public List<ReservationDto> GetActiveReservations()
+        {
+            var list = _repositoryReservation.GetActiveReservations();
 
             return ReservationDto.CreateList(list);
         }
 
         public ReservationDto GetById(int id)
         {
-            var obj = _repositoryReservation.GetReservationById(id)
-                ?? throw new Exception("No encontrado");
-            //agrega un usuario a la reservacion.
-            obj.User = _repositoryUser.GetById(obj.IdUser);
+            var obj = _repositoryReservation.GetReservationById(id);
+            if (obj == null)
+            {
+                return null;
+            }
             return ReservationDto.Create(obj);
         }
 
@@ -82,7 +85,7 @@ namespace Application.Services
 
 
 
-        public List<SneakerDto>? AddToReservation(ReservationSneakerRequest rsDto)
+        public void AddToReservation(ReservationSneakerRequest rsDto)
         {
             var sneaker = _repositorySneaker.GetById(rsDto.SneakerId)
                 ?? throw new Exception("Sneaker no encontrada");
@@ -91,16 +94,11 @@ namespace Application.Services
             {
                 //Agrega la zapatilla 
                 _repositoryReservation.AddToReservation(sneaker, rsDto.ReservationId, rsDto.Quantity);
-                var reservation = _repositoryReservation.GetReservationById(rsDto.ReservationId)
-                    ?? throw new Exception("No se encontro la reservacion");
-
-
-                //Crea lista de Sneaker
-                var sneakerInReservation = reservation.ReservationSneakers.Select(rs => rs.Sneaker).ToList();
-                return SneakerDto.CreateList(sneakerInReservation);
+            } else
+            {
+                throw new Exception("No hay Stock");
             }
 
-            throw new Exception("No hay Stock");
         }
 
         public void BuyReservation(int idReservation)

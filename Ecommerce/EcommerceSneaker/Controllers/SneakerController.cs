@@ -11,9 +11,9 @@ namespace EcommerceSneaker.Controllers
     [ApiController]
     public class SneakerController : ControllerBase
     {
-        private readonly ISneakerServices _senakerServices;
+        private readonly ISneakerService _senakerServices;
 
-        public SneakerController(ISneakerServices senakerServices)
+        public SneakerController(ISneakerService senakerServices)
         {
             _senakerServices = senakerServices;
         }

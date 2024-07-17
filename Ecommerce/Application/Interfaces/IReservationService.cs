@@ -15,7 +15,8 @@ namespace Application.Interfaces
         List<ReservationDto> GetAll();
         ReservationDto GetById(int id);
         void FinalizedReservation(int id);
-        List<SneakerDto>? AddToReservation(ReservationSneakerRequest rsDto);
+        void AddToReservation(ReservationSneakerRequest rsDto);
         void BuyReservation(int idReservation);
+        public List<ReservationDto> GetActiveReservations();
     }
 }

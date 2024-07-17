@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface ISneakerServices
+    public interface ISneakerService
     {
         List<SneakerDto> GetSneaker();
         SneakerDto GetById(int id);

@@ -38,16 +38,21 @@ namespace Infrastructure.Data
                 .HasForeignKey(rs => rs.ReservationId);
             modelBuilder.Entity<ReservationSneaker>()
                 .HasOne(rs => rs.Sneaker)
-                .WithMany(s => s.ReservationSneakers)
+                .WithMany()
                 .HasForeignKey(s => s.SneakerId);
 
 
             //Cardinalidad, Relación uno a muchos entre Reservation y usuario 
             modelBuilder.Entity<Reservation>()
                 .HasOne(r => r.User)
-                .WithMany(u => u.Reservations)
+                .WithMany()
                 .HasForeignKey(r => r.IdUser);
 
+
+            modelBuilder.Entity<Reservation>()
+            .HasMany(c => c.ReservationSneakers)
+            .WithOne(ci => ci.Reservation)
+            .HasForeignKey(ci => ci.ReservationId);
 
 
             //has many: Tiene muchos --has one: tiene uno -- whith many: con muchos -- has foreignkey: tiene una Fkey

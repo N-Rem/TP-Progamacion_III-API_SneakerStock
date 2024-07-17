@@ -105,11 +105,6 @@ namespace Application.Services
         {
             //agregue a cada una de las recervaciones el usuario correspondiente para que se muestre.
             var listReservation = _repositoryUser.GetAllReservationUser(idUser);
-            var user = _repositoryUser.GetById(idUser);
-            foreach (var reservation in listReservation)
-            {
-                reservation.User = user;
-            }
             return ReservationDto.CreateList(listReservation);
         }
 

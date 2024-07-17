@@ -33,12 +33,8 @@ namespace Application.Models
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public UserType Type { get; set; }
 
-        public ICollection<ReservationDto> Reservations { get; set; }
+        //public ICollection<ReservationDto> Reservations { get; set; }
 
-        public UserDto()
-        {
-            Reservations = new List<ReservationDto>();
-        }
 
         public static UserDto Create(User user)
         {
@@ -49,7 +45,6 @@ namespace Application.Models
             dto.EmailAddress = user.EmailAddress;
             dto.Id = user.Id;
             dto.Type = user.Type;
-            user.Reservations = null;
 
             return dto;
         }

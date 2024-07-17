@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class SneakerServices : ISneakerServices
+    public class SneakerService : ISneakerService
     {
         private IRepositorySneaker _repositorySneaker;
         private IRepositoryReservation _repositoryReservation;
 
-        public SneakerServices(IRepositorySneaker repositorySneaker, IRepositoryReservation respositoryReservation)
+        public SneakerService(IRepositorySneaker repositorySneaker, IRepositoryReservation respositoryReservation)
         {
             _repositoryReservation = respositoryReservation;
             _repositorySneaker = repositorySneaker;

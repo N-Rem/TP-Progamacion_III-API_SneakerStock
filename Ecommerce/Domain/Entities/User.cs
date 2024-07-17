@@ -33,7 +33,7 @@ namespace Domain.Entities
         [Required]
         public UserType Type { get; set; }
 
-        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+        //public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
 
         public enum UserType
