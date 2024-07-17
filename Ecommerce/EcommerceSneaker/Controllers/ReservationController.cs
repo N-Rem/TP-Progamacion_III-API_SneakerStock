@@ -29,6 +29,9 @@ namespace EcommerceSneaker.Controllers
                 return Forbid();
             return Ok(_reservationService.GetAll());
         }
+
+        //Crear un get para ver solo las reservaciones de un Client.
+
         [HttpGet("GetById{id}")]
         public IActionResult GetById([FromRoute] int id)
         {
@@ -54,13 +57,24 @@ namespace EcommerceSneaker.Controllers
         [HttpPut("IdFinalizedReservation{id}")]
         public IActionResult FinalizedReservation([FromRoute] int id)
         {
+            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+            if (userRole != "Admin")
+            {
+                return Forbid();
+            }
             _reservationService.FinalizedReservation(id);
             return Ok();
         }
+
+        //¿Crear un endpoint que solo permita finalizar las reservaciones del cliente?
+
+        //¿Crear un endpoint que solo permita Eliminar las reservaciones del cliente?
+
         [HttpPut("AddSneakerToResrevation")]
         public IActionResult AddToReservation([FromBody] ReservationSneakerRequest rsDto)
         {
-            //Solo ´puede agregar zapatillas el cliente.
+            //Solo puede agregar zapatillas el cliente.
             var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
             if (userRole != "Client")
                 return Forbid();
@@ -71,6 +85,13 @@ namespace EcommerceSneaker.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
+            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+            if (userRole != "Admin")
+            {
+                return Forbid();
+            }
+
             _reservationService.Delete(id);
             return Ok();
         }

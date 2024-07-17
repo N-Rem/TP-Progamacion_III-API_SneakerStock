@@ -78,7 +78,7 @@ namespace EcommerceSneaker.Controllers
             return Ok();
         }
         [HttpPost("/Client")]
-        [AllowAnonymous]
+        [AllowAnonymous] //Para que los visitantes puedan crear una cuenta nueva
         public IActionResult CerateClient([FromBody] UserCreateRequest client)
         {
             var userRole = User.Claims.FirstOrDefault(c => c.Type== ClaimTypes.Role)?.Value;
@@ -113,14 +113,9 @@ namespace EcommerceSneaker.Controllers
             {
                 return Forbid();
             }
-            var idUserClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            
-            if(!int.TryParse(idUserClaim, out int idUser))
-            {
-                throw new Exception("El Id no es valido");
-            }
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? "");
 
-            _userServices.Update(user, idUser);
+            _userServices.Update(user, userId);
             return Ok();
         }
 
@@ -128,6 +123,12 @@ namespace EcommerceSneaker.Controllers
         [HttpDelete("/Delete{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
+            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+            if (userRole != "Admin")
+            {
+                return Forbid();
+            }
             _userServices.DeleteById(id);
             return Ok();
         }
