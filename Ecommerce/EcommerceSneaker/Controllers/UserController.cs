@@ -78,12 +78,19 @@ namespace EcommerceSneaker.Controllers
             return Ok();
         }
         [HttpPost("/Client")]
+        [AllowAnonymous]
         public IActionResult CerateClient([FromBody] UserCreateRequest client)
         {
+            var userRole = User.Claims.FirstOrDefault(c => c.Type== ClaimTypes.Role)?.Value;
+
+            if (userRole != null && userRole != "Admin")
+            {
+                return Forbid();
+            }
+
             _userServices.CreateClient(client);
             return Ok();
         }
-
 
         [HttpPut("/Update{idUser}")]
         public IActionResult Update([FromBody] UserCreateRequest user, [FromRoute] int idUser)
