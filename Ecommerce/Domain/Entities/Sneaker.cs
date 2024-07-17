@@ -31,7 +31,7 @@ namespace Domain.Entities
         [Range(0, int.MaxValue, ErrorMessage = "must be a positive value.")]
         public int Stock { get; set; }
 
-        public ICollection<ReservationSneaker> ReservationSneakers { get; set; } = new List<ReservationSneaker>();
+        //public ICollection<ReservationSneaker> ReservationSneakers { get; set; } = new List<ReservationSneaker>();
         public enum SneakerCategory
         {
             Sports,

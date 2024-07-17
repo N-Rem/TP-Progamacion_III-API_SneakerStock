@@ -19,7 +19,7 @@ namespace Domain.Entities
 
         //Tabla intermedia.
         //[Required]
-        public ICollection<ReservationSneaker> ReservationSneakers { get; set; } = new List<ReservationSneaker>();
+        public ICollection<ReservationSneaker> ReservationSneakers { get; set; }
 
         [Required]
         [ForeignKey("IdUser")]

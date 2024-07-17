@@ -23,7 +23,7 @@ namespace Application.Models
 
         public UserDto? User { get; set; }
 
-        public ICollection<SneakerDto>? Sneakers { get; set; }
+        public ICollection<ReservationSneakerDto>? ReservationSneakers { get; set; }
 
 
 
@@ -35,20 +35,8 @@ namespace Application.Models
             dto.IdUser = reservation.IdUser;
             dto.State = reservation.State;
             dto.User = UserDto.Create(reservation.User);
+            dto.ReservationSneakers = ReservationSneakerDto.CreateList(reservation.ReservationSneakers);
 
-
-            var listSneaker = new List<Sneaker>();
-            foreach (var rs in reservation.ReservationSneakers)
-            {
-                for (int i = 1; i <= rs.Quantity; i++)
-                {
-                    listSneaker.Add(rs.Sneaker);
-
-                }
-            }
-
-
-            dto.Sneakers = SneakerDto.CreateList(listSneaker);
             return dto;
         }
 

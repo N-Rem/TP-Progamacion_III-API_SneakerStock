@@ -29,6 +29,14 @@ namespace EcommerceSneaker.Controllers
                 return Forbid();
             return Ok(_reservationService.GetAll());
         }
+        [HttpGet("ActiveReservations")]
+        public IActionResult GetActiveReservations()
+        {
+            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+            if (userRole != "Admin")
+                return Forbid();
+            return Ok(_reservationService.GetActiveReservations());
+        }
 
         //Crear un get para ver solo las reservaciones de un Client.
 

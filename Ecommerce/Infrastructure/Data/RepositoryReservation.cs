@@ -17,19 +17,19 @@ namespace Infrastructure.Data
             _context = context;
         }
 
-        public Reservation AddReservation(Reservation reservation)
+        /*public Reservation AddReservation(Reservation reservation)
         {
             var user = _context.users.FirstOrDefault(r => r.Id == reservation.IdUser);
             reservation.User = user;
             _context.Reservations.Add(reservation);
             _context.SaveChanges();
             return reservation;
-        }
+        }*/
 
         public ICollection<Reservation>? GetAllReservation()
         {
-            var listReservation = _context.Reservations.Include(r => r.ReservationSneakers).ThenInclude(rs => rs.Sneaker).ToList()
-            ?? throw new Exception("no se econtraron Reservasiones");
+            var listReservation = _context.Reservations.Include(r => r.User).Include(r => r.ReservationSneakers).ThenInclude(rs => rs.Sneaker).ToList()
+            ?? throw new Exception("no se econtraron Reservas");
 
             return listReservation;
         }
@@ -38,12 +38,21 @@ namespace Infrastructure.Data
         {
             return _context.Reservations.Include(r => r.ReservationSneakers).ThenInclude(rs => rs.Sneaker).FirstOrDefault(r => r.Id == id);
         }
+        public ICollection<Reservation> GetActiveReservations()
+        {
+            return _context.Reservations
+                .Include(r => r.User)
+                .Include(c => c.ReservationSneakers) // Incluir los items del carrito
+                .ThenInclude(item => item.Sneaker) // Incluir el producto (Pizza)
+                .Where(c => c.State == Reservation.ReservationState.Active) // Filtrar por carritos activos
+                .ToList();
+        }
 
 
         public void AddToReservation(Sneaker sneaker, int reservationId, int quantity)
         {
 
-            var reservation = _context.Reservations.Include(r => r.ReservationSneakers).FirstOrDefault(r => r.Id == reservationId)
+            var reservation = _context.Reservations.Include(r => r.ReservationSneakers).ThenInclude(r => r.Sneaker).FirstOrDefault(r => r.Id == reservationId)
                 ?? throw new Exception("no se encontro la Reservation");
 
             if (reservation.State == Reservation.ReservationState.Finalized)
@@ -51,7 +60,7 @@ namespace Infrastructure.Data
                 throw new Exception("La reservacion esta finalizada");
             }
 
-            var reservationSneaker = reservation.ReservationSneakers.FirstOrDefault(rs => rs.Sneaker.Id == sneaker.Id);
+            var reservationSneaker = reservation.ReservationSneakers.FirstOrDefault(rs => rs.SneakerId == sneaker.Id);
             if (reservationSneaker == null)
             {
                 reservation.ReservationSneakers.Add(new ReservationSneaker()
