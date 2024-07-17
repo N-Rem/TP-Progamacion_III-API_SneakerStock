@@ -95,6 +95,31 @@ namespace EcommerceSneaker.Controllers
         [HttpPut("/Update{idUser}")]
         public IActionResult Update([FromBody] UserCreateRequest user, [FromRoute] int idUser)
         {
+            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+            if (userRole != "Admin")
+            {
+                return Forbid();
+            }
+            _userServices.Update(user, idUser);
+            return Ok();
+        }
+
+        [HttpPut("/UpdateForClient")]
+        public IActionResult UpdateForClient([FromBody] UserCreateRequest user)
+        {
+            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+            if(userRole != "Client")
+            {
+                return Forbid();
+            }
+            var idUserClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            
+            if(!int.TryParse(idUserClaim, out int idUser))
+            {
+                throw new Exception("El Id no es valido");
+            }
+
             _userServices.Update(user, idUser);
             return Ok();
         }
