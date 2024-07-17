@@ -1,8 +1,8 @@
 # Trabajo Practico Integrador Progamacion 3.
 
 ## Integrantes:
- **Rustici, Anabella**
- **Romero Barrios, Nicolas Alejandro**
+ **Rustici, Anabella** <br>
+ **Romero Barrios, Nicolas Alejandro** <br>
  **Isaguirre, Maria Delfina**
 
 <hr/>
