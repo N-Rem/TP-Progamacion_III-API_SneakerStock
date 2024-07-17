@@ -41,8 +41,8 @@ namespace EcommerceSneaker.Controllers
         {
             return Ok(_senakerServices.GetByCategory(category));
         }
-        [HttpPost]
 
+        [HttpPost]
         public IActionResult Cretate(SneakerDto sneakerDto)
         {
             var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
