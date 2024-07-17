@@ -18,14 +18,25 @@ namespace Infrastructure.Data
 
         public ICollection<Sneaker>? GetByBrand(string brand)
         {
-            return (List<Sneaker>)_context.Set<Sneaker>().ToList().Where(sneaker => sneaker.Brand.ToString().Equals(brand, StringComparison.OrdinalIgnoreCase))
+            var listSneaker = _context.Set<Sneaker>().ToList().Where(sneaker => sneaker.Brand.ToString().Equals(brand, StringComparison.OrdinalIgnoreCase))
                 .ToList();
+            if(listSneaker.Count == 0)
+            {
+                throw new Exception("no se encontro la marca de zapatilla");
+            }
+            return listSneaker;
         }
 
         public ICollection<Sneaker>? GetByCategory(string category)
         {
-            return (List<Sneaker>)_context.Set<Sneaker>().ToList().Where(sneaker => sneaker.Category.ToString().Equals(category, StringComparison.OrdinalIgnoreCase))
+            var listSneaker = _context.Set<Sneaker>().ToList().Where(sneaker => sneaker.Category.ToString().Equals(category, StringComparison.OrdinalIgnoreCase))
                 .ToList();
+
+            if (listSneaker.Count == 0)
+            {
+                throw new Exception("no se encontro la categoria de zapatilla");
+            }
+            return listSneaker;
         }
 
     }
