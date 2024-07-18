@@ -69,6 +69,10 @@ namespace Application.Services
             {
                 return null;
             }
+            //agregar el usuario al obj reservation.
+            var user = _repositoryUser.GetById(obj.IdUser)
+                ?? throw new Exception("no se encontro el user");
+            obj.User = user;
             return ReservationDto.Create(obj);
         }
 
