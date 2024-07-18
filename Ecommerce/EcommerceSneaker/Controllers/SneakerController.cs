@@ -48,13 +48,19 @@ namespace EcommerceSneaker.Controllers
             var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
             if (userRole != "Admin")
                 return Forbid();
+
             try
             {
-                return Ok(_senakerServices.Create(sneakerDto));
+                _senakerServices.Create(sneakerDto);
+                return Ok();
             }
             catch (ArgumentException ex)
             {
                 return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return Conflict(new { message = ex.Message });
             }
         }
 
@@ -64,6 +70,7 @@ namespace EcommerceSneaker.Controllers
             var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
             if (userRole != "Admin")
                 return Forbid();
+
             try
             {
                 _senakerServices.Update(sneakerDto, idSneaker);
@@ -72,6 +79,10 @@ namespace EcommerceSneaker.Controllers
             catch (ArgumentException ex)
             {
                 return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return Conflict(new { message = ex.Message });
             }
         }
 
