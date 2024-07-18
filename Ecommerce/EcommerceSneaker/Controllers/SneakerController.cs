@@ -48,7 +48,14 @@ namespace EcommerceSneaker.Controllers
             var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
             if (userRole != "Admin")
                 return Forbid();
-            return Ok(_senakerServices.Create(sneakerDto));
+            try
+            {
+                return Ok(_senakerServices.Create(sneakerDto));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
 
         [HttpPut("updateSneaker{idSneaker}")]
@@ -57,8 +64,15 @@ namespace EcommerceSneaker.Controllers
             var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
             if (userRole != "Admin")
                 return Forbid();
-            _senakerServices.Update(sneakerDto, idSneaker);
-            return Ok();
+            try
+            {
+                _senakerServices.Update(sneakerDto, idSneaker);
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
 
         [HttpDelete("delete{id}")]
