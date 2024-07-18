@@ -39,6 +39,18 @@ namespace Application.Services
 
         public SneakerDto Create(SneakerDto sneakerDto)
         {
+            //Valida la marca
+            if (!Enum.TryParse<Sneaker.SneakerBrand>(sneakerDto.Brand.ToString(), true, out var brand) || !Enum.IsDefined(typeof(Sneaker.SneakerBrand), brand))
+            {
+                throw new ArgumentException("Brand no es una opción válida");
+            }
+
+            //Valida la categoria
+            if (!Enum.TryParse<Sneaker.SneakerCategory>(sneakerDto.Category.ToString(), true, out var category) || !Enum.IsDefined(typeof(Sneaker.SneakerCategory), category))
+            {
+                throw new ArgumentException("Category no es una opción válida");
+            }
+
             var sneaker = new Sneaker()
             {
                 Id = sneakerDto.Id,
@@ -57,6 +69,18 @@ namespace Application.Services
         {
             var obj = _repositorySneaker.GetById(id)
                 ?? throw new Exception("No se encontro la zapatilla");
+
+            //Valida la marca
+            if (!Enum.TryParse<Sneaker.SneakerBrand>(sneakerDto.Brand.ToString(), true, out var brand) || !Enum.IsDefined(typeof(Sneaker.SneakerBrand), brand))
+            {
+                throw new ArgumentException("Brand no es una opción válida");
+            }
+
+            //Valida la categoria
+            if (!Enum.TryParse<Sneaker.SneakerCategory>(sneakerDto.Category.ToString(), true, out var category) || !Enum.IsDefined(typeof(Sneaker.SneakerCategory), category))
+            {
+                throw new ArgumentException("Category no es una opción válida");
+            }
 
             obj.Name = sneakerDto.Name;
             obj.Brand = sneakerDto.Brand;
