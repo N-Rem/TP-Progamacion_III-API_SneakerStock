@@ -16,5 +16,6 @@ namespace Application.Interfaces
         void DeleteById(int id);
         List<SneakerDto> GetByBrand(string brand);
         List<SneakerDto> GetByCategory(string category);
+        bool SneakerExists(string name, string brand, string category);
     }
 }

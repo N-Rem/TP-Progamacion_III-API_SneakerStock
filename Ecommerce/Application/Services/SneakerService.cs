@@ -21,6 +21,12 @@ namespace Application.Services
             _repositorySneaker = repositorySneaker;
         }
 
+        //Validar que no se pueda crear una zapatilla con la misma info
+        public bool SneakerExists(string name, string brand, string category)
+        {
+            return _repositorySneaker.GetAll().Any(sneaker => sneaker.Name == name && sneaker.Brand.ToString() == brand && sneaker.Category.ToString() == category);
+        }
+
         //CRUD ----- Sneaker
         public List<SneakerDto> GetSneaker()
         {
@@ -49,6 +55,12 @@ namespace Application.Services
             if (!Enum.TryParse<Sneaker.SneakerCategory>(sneakerDto.Category.ToString(), true, out var category) || !Enum.IsDefined(typeof(Sneaker.SneakerCategory), category))
             {
                 throw new ArgumentException("Category no es una opción válida");
+            }
+
+            //Valida que ya exista una zapatiila con la misma info
+            if (SneakerExists(sneakerDto.Name, sneakerDto.Brand.ToString(), sneakerDto.Category.ToString()))
+            {
+                throw new Exception("Ya existe una zapatilla con esa informacion");
             }
 
             var sneaker = new Sneaker()
@@ -80,6 +92,11 @@ namespace Application.Services
             if (!Enum.TryParse<Sneaker.SneakerCategory>(sneakerDto.Category.ToString(), true, out var category) || !Enum.IsDefined(typeof(Sneaker.SneakerCategory), category))
             {
                 throw new ArgumentException("Category no es una opción válida");
+            }
+
+            if (SneakerExists(sneakerDto.Name, sneakerDto.Brand.ToString(), sneakerDto.Category.ToString()))
+            {
+                throw new Exception("Ya existe una zapatilla con esa informacion");
             }
 
             obj.Name = sneakerDto.Name;

@@ -27,7 +27,7 @@ namespace Application.Interfaces
 
         void DeleteById(int id);
 
-
+        bool UserExists(string email, string name);
 
     }
 }

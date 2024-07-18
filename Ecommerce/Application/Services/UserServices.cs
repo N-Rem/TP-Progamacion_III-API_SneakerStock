@@ -20,6 +20,13 @@ namespace Application.Services
         {
             _repositoryUser = repositoryUser;
         }
+
+        //metodo para verificar si ya existe un usuario con esa informacion
+        public bool UserExists(string email, string name)
+        {
+            return _repositoryUser.GetAll().Any(user => user.EmailAddress == email || user.Name == name);
+        }
+
         //CRUD ---- ADMIN, CLIENT, USERS
         public List<UserDto> GetAdmins()
         {
@@ -52,6 +59,11 @@ namespace Application.Services
 
         public void CreateAdmin(UserCreateRequest adminDto)
         {
+            if(UserExists(adminDto.Name, adminDto.Name))
+            {
+                throw new Exception("Ya existe un admin con ese nombre o email");
+            }
+
             var Admin = new User()
             {
                 Name = adminDto.Name,
@@ -66,6 +78,11 @@ namespace Application.Services
         }
         public void CreateClient(UserCreateRequest clientDto)
         {
+            if (UserExists(clientDto.Name, clientDto.Name))
+            {
+                throw new Exception("Ya existe un cliente con ese nombre o email");
+            }
+
             var Admin = new User()
             {
                 Name = clientDto.Name,
@@ -107,6 +124,7 @@ namespace Application.Services
             var listReservation = _repositoryUser.GetAllReservationUser(idUser);
             return ReservationDto.CreateList(listReservation);
         }
+
 
     }
 }

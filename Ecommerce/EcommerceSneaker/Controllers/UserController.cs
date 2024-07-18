@@ -74,9 +74,18 @@ namespace EcommerceSneaker.Controllers
             var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
             if (userRole != "Admin")
                 return Forbid();
-            _userServices.CreateAdmin(admin);
-            return Ok();
+
+            try
+            {
+                _userServices.CreateAdmin(admin);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Conflict(new { message = ex.Message });
+            }
         }
+
         [HttpPost("/Client")]
         [AllowAnonymous] //Para que los visitantes puedan crear una cuenta nueva
         public IActionResult CerateClient([FromBody] UserCreateRequest client)
@@ -88,8 +97,15 @@ namespace EcommerceSneaker.Controllers
                 return Forbid();
             }
 
-            _userServices.CreateClient(client);
-            return Ok();
+            try
+            {
+                _userServices.CreateClient(client);
+                return Ok();
+            }catch (Exception ex)
+            {
+                return Conflict(new { message = ex.Message });
+            }
+
         }
 
         [HttpPut("/Update{idUser}")]
