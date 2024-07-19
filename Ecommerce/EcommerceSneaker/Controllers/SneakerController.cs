@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models;
+using Application.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -43,7 +44,7 @@ namespace EcommerceSneaker.Controllers
         }
 
         [HttpPost]
-        public IActionResult Cretate(SneakerDto sneakerDto)
+        public IActionResult Create(SneakerCreateRequest sneakerDto)
         {
             var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
             if (userRole != "Admin")
@@ -59,7 +60,7 @@ namespace EcommerceSneaker.Controllers
         }
 
         [HttpPut("updateSneaker{idSneaker}")]
-        public IActionResult Update([FromBody] SneakerDto sneakerDto, [FromRoute] int idSneaker)
+        public IActionResult Update([FromBody] SneakerCreateRequest sneakerDto, [FromRoute] int idSneaker)
         {
             var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
             if (userRole != "Admin")

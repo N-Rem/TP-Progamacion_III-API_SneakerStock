@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models;
+using Application.Models.Requests;
 using Domain.Entities;
 using Domain.Interface;
 using System;
@@ -37,7 +38,7 @@ namespace Application.Services
             return objDto;
         }
 
-        public SneakerDto Create(SneakerDto sneakerDto)
+        public SneakerDto Create(SneakerCreateRequest sneakerDto)
         {
             //Valida la marca
             if (!Enum.TryParse<Sneaker.SneakerBrand>(sneakerDto.Brand.ToString(), true, out var brand) || !Enum.IsDefined(typeof(Sneaker.SneakerBrand), brand))
@@ -53,7 +54,6 @@ namespace Application.Services
 
             var sneaker = new Sneaker()
             {
-                Id = sneakerDto.Id,
                 Name = sneakerDto.Name,
                 Brand = sneakerDto.Brand,
                 Category = sneakerDto.Category,
@@ -62,10 +62,10 @@ namespace Application.Services
             };
 
             _repositorySneaker.Add(sneaker);
-            return sneakerDto;
+            return SneakerDto.Create(sneaker);
         }
 
-        public void Update(SneakerDto sneakerDto, int id)
+        public void Update(SneakerCreateRequest sneakerDto, int id)
         {
             var obj = _repositorySneaker.GetById(id)
                 ?? throw new Exception("No se encontro la zapatilla");
