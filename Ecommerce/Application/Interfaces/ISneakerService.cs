@@ -1,4 +1,5 @@
 ﻿using Application.Models;
+using Application.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace Application.Interfaces
     {
         List<SneakerDto> GetSneaker();
         SneakerDto GetById(int id);
-        SneakerDto Create(SneakerDto sneakerDto);
-        void Update(SneakerDto sneakerDto, int id);
+        SneakerDto Create(SneakerCreateRequest sneakerDto);
+        void Update(SneakerCreateRequest sneakerDto, int id);
         void DeleteById(int id);
         List<SneakerDto> GetByBrand(string brand);
         List<SneakerDto> GetByCategory(string category);

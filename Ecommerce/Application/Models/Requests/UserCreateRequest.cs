@@ -27,8 +27,5 @@ namespace Application.Models.Requests
         [EmailAddress(ErrorMessage = "invalid Email Address")]
         public string EmailAddress { get; set; }
 
-        [Required]
-        public UserType Type { get; set; }
-
     }
 }
